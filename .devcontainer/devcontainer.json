@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "gql-sse-reproduction",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+	"features": {
+		"ghcr.io/joedmck/devcontainer-features/wrangler:1": {},
+		"ghcr.io/devcontainers-community/npm-features/prettier:1": {},
+		"ghcr.io/devcontainers-extra/features/pnpm:2": {},
+		"ghcr.io/joshuanianji/devcontainer-features/mount-pnpm-store": {},
+		"ghcr.io/devcontainers-extra/features/cloudflared": {}
+	},
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"christian-kohler.npm-intellisense",
+				"esbenp.prettier-vscode",
+				"GraphQL.vscode-graphql"
+			]
+		}
+	},
+	"runArgs": ["--net=host"], // This is set to host due to authentication issues with wrangler cli
+
+	"postStartCommand": "pnpm install",
+	"postCreateCommand": "pnpm completion bash > ~/completion-for-pnpm.bash && echo 'source ~/completion-for-pnpm.bash' >> ~/.bashrc",
+
+}

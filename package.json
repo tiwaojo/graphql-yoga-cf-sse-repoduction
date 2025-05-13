@@ -1,0 +1,41 @@
+{
+  "name": "gql-cf-sse-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GraphQL API server source code.",
+  "scripts": {
+    "dev": "pnpm run kysely-codegen && wrangler dev",
+    "deploy": "wrangler deploy",
+    "start": "wrangler dev",
+    "cf:create-kv": "wrangler kv namespace create GQL_API_KV_STORE",
+    "cf:delete-kv": "wrangler kv namespace delete --binding GQL_API_KV_STORE",
+    "cf:create-d1": "wrangler d1 create SUBSCRIPTIONS",
+    "cf:create-d1:migrations": "wrangler d1 migrations apply SUBSCRIPTIONS",
+    "codegen": "pnpm run cf:typegen && pnpm run kysely-codegen && pnpm run gql-codegen",
+    "cf:typegen": "wrangler types",
+    "gql-codegen": "npx graphql-codegen -c codegen.ts",
+    "gql-codegen:watch": "npx graphql-codegen -c codegen.ts -w",
+    "kysely-codegen": "kysely-codegen --dialect postgres --env-file .dev.vars --out-file ./src/__generated__/db/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@graphql-yoga/plugin-disable-introspection": "^2.14.1",
+    "@graphql-yoga/plugin-graphql-sse": "^3.13.3",
+    "@types/pg": "^8.11.11",
+    "graphql": "^16.10.0",
+    "graphql-scalars": "^1.24.1",
+    "graphql-sse": "^2.5.4",
+    "graphql-yoga": "^5.11.0",
+    "kysely": "^0.27.5",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240208.0",
+    "kysely-codegen": "^0.17.0",
+    "typescript": "^5.7.3",
+    "wrangler": "^3.109.1"
+  },
+  "packageManager": "pnpm@10.2.1"
+}

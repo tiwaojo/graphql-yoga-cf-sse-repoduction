@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": ".",
+	  "target": "esnext",
+	  "module": "esnext",
+    "skipLibCheck": true,
+	  "lib": ["esnext"],
+	  "moduleResolution": "bundler",
+	  "strict": true,
+	  "types": ["@cloudflare/workers-types"]
+	},
+	"exclude": ["./node_modules", "./dist"]
+}
