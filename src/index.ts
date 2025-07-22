@@ -22,7 +22,7 @@ export default {
             createMessage(text: String!): String
           }
           type Subscription {
-            newMessage: String!
+            newMessage: String
           }
         `,
         resolvers: {
@@ -41,13 +41,16 @@ export default {
           },
           Subscription: {
             newMessage: {
-              subscribe: (
+              subscribe: async function* (
                 parent: unknown,
                 args: {},
                 context: ResolverContext
-              ) => {
+              ) {
                 const res = context.pubSub.subscribe("newMessage");
-                return res;
+                yield* res;
+              },
+              resolve: (payload: { text: string }) => {
+                return payload.text;
               },
             },
           },
