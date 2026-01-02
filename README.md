@@ -25,3 +25,16 @@
     }
     ```
     - Observe the error response in tab1 and the terminal with the subscription query
+
+## Tests - Cloudflare Workers with AuthZ Implementation
+
+- Install dependencies and execute the test
+```bash
+pnpm i
+pnpm run test
+```
+
+- Observe error
+```bash
+ Cannot read properties of undefined (reading 'GraphQLDirective')
+```
