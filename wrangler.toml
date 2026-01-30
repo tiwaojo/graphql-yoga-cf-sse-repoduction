@@ -1,9 +1,7 @@
 name = "gql-api"
 main = "./src/index.ts"
-compatibility_date = "2025-07-22"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2026-01-30"
+compatibility_flags = ["nodejs_compat","no_handle_cross_request_promise_resolution"]
 
 [vars]
-NODE_ENV = "production"
-NODE_VERSION = "22.14.0"
 GQL_DEPTH_LIMIT = 4

@@ -3,12 +3,13 @@ import { createContext } from "./utils/context";
 import { ResolverContext } from "./types/types";
 import { GraphQLError } from "graphql";
 import { useGraphQLSSE } from "@graphql-yoga/plugin-graphql-sse";
+import { maxDepthPlugin } from "@escape.tech/graphql-armor-max-depth";
 
 export default {
   async fetch(
     request: Request,
     env: Env,
-    ctx: ExecutionContext
+    ctx: ExecutionContext,
   ): Promise<Response> {
     // Create a Yoga instance with your schema
     const yoga = createYoga<ResolverContext>({
@@ -30,7 +31,7 @@ export default {
             async createMessage(
               parent: unknown,
               args: { text: string },
-              context: ResolverContext
+              context: ResolverContext,
             ) {
               context.pubSub.publish("newMessage", {
                 text: args.text,
@@ -44,7 +45,7 @@ export default {
               subscribe: async function* (
                 parent: unknown,
                 args: {},
-                context: ResolverContext
+                context: ResolverContext,
               ) {
                 const res = context.pubSub.subscribe("newMessage");
                 yield* res;
@@ -57,7 +58,10 @@ export default {
         },
       }),
       graphiql: { subscriptionsProtocol: "GRAPHQL_SSE" },
-      plugins: [useGraphQLSSE({})],
+      plugins: [
+        useGraphQLSSE({}),
+        maxDepthPlugin({ n: env.GQL_DEPTH_LIMIT || 4 }),
+      ],
     });
 
     return yoga.fetch(request);
